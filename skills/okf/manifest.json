@@ -1,0 +1,11 @@
+{
+  "id": "okf",
+  "name": "OKF Authoring",
+  "version": "0.1.0",
+  "description": "Author Open Knowledge Format (OKF) knowledge bundles in the vault so they can be used as Gemini Helper knowledge sources.",
+  "compatibility": {
+    "plugins": [
+      { "id": "gemini-helper", "minVersion": "1.16.0" }
+    ]
+  }
+}
