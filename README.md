@@ -15,11 +15,14 @@ Example:
 {
   "id": "okf",
   "name": "OKF Authoring",
-  "version": "0.1.0",
-  "description": "Author Open Knowledge Format (OKF) knowledge bundles in the vault so they can be used as Gemini Helper knowledge sources.",
+  "version": "0.1.1",
+  "description": "Author Open Knowledge Format (OKF) knowledge bundles in the vault so they can be used as LLM Hub ecosystem knowledge sources.",
   "compatibility": {
     "plugins": [
-      { "id": "gemini-helper", "minVersion": "1.16.0" }
+      { "id": "gemini-helper", "minVersion": "1.16.0" },
+      { "id": "llm-hub", "minVersion": "0.24.0" },
+      { "id": "local-llm-hub", "minVersion": "0.16.0" },
+      { "id": "gemihub", "minVersion": "0.1.0" }
     ]
   }
 }
@@ -48,4 +51,4 @@ Rules:
 
 ## Skills
 
-- **okf** — Author and maintain Open Knowledge Format (OKF) knowledge bundles in the vault, for use as Gemini Helper knowledge sources.
+- **okf** — Author and maintain Open Knowledge Format (OKF) knowledge bundles in the vault, for use as LLM Hub ecosystem knowledge sources.

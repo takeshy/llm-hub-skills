@@ -1,6 +1,6 @@
 ---
 name: okf
-description: Author and maintain Open Knowledge Format (OKF) knowledge bundles — directories of markdown files with YAML frontmatter that capture curated domain knowledge (metrics, tables, datasets, playbooks, glossaries). Use when the user asks to create, generate, or update an OKF bundle, a knowledge bundle, or curated domain context for chat. Once authored, the bundle can be registered as a Gemini Helper OKF knowledge source.
+description: Author and maintain Open Knowledge Format (OKF) knowledge bundles — directories of markdown files with YAML frontmatter that capture curated domain knowledge (metrics, tables, datasets, playbooks, glossaries). Use when the user asks to create, generate, or update an OKF bundle, a knowledge bundle, or curated domain context for chat. Once authored, the bundle can be registered as an OKF knowledge source in supported LLM Hub ecosystem hosts.
 ---
 
 # OKF Authoring
@@ -17,7 +17,7 @@ Reference spec: https://github.com/GoogleCloudPlatform/knowledge-catalog/tree/ma
 Use this skill when the user wants to:
 - Turn a domain (e.g. a BigQuery dataset, a product area, a set of metrics) into a curated knowledge bundle.
 - Create or extend an OKF bundle, or add concepts/index/log files to one.
-- Produce curated context that can be selected in chat as a Gemini Helper OKF knowledge source.
+- Produce curated context that can be selected in chat as an OKF knowledge source.
 
 ## Authoring workflow
 
@@ -207,10 +207,10 @@ Before finishing, verify the bundle:
 - [ ] `timestamp` values, where present, are ISO 8601.
 - [ ] Cross-links use bundle-relative `/…` form where practical.
 
-## How Gemini Helper consumes the bundle
+## How hosts consume the bundle
 
 When the bundle is registered as an OKF knowledge source and selected in chat,
-Gemini Helper injects a compact summary into the system prompt: each concept's
+the host injects a compact summary into the system prompt: each concept's
 `type`, `title`, `description`, `tags`, file path, and a short body excerpt.
 `log.md` is skipped; `index.md` is treated as an index. Because the loader applies
 conservative file/character limits, keep bundles **focused** and write **tight,
