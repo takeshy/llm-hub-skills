@@ -1,7 +1,7 @@
 {
   "id": "okf",
   "name": "OKF Authoring",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Author Open Knowledge Format (OKF) knowledge bundles in the vault so they can be used as LLM Hub ecosystem knowledge sources.",
   "compatibility": {
     "plugins": [

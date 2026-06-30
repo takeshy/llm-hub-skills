@@ -35,8 +35,8 @@ Use this skill when the user wants to:
    progressive disclosure.
 6. **Optionally write `log.md`** to record what was created/updated.
 7. **Tell the user to register the bundle**: Settings → *Knowledge sources* →
-   *OKF sources* → *Add OKF source*, point it at the bundle root, then select it
-   in chat via the knowledge selector next to the skill selector.
+   enable *OKF*, set the OKF directory to the bundle root, then select the
+   discovered OKF bundle in chat from the OKF selector.
 
 ## Bundle structure
 
