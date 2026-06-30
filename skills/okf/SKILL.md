@@ -22,7 +22,11 @@ Use this skill when the user wants to:
 ## Authoring workflow
 
 1. **Confirm the target directory.** Ask for (or propose) a vault-relative bundle
-   root, e.g. `Knowledge/sales-okf`. All files go under it.
+   root under `Knowledge/`, e.g. `Knowledge/sales-okf`. All OKF bundle files go
+   under that directory. If the user provides only a bundle name, create it as
+   `Knowledge/<bundle-name>`. Always create a bundle subdirectory under
+   `Knowledge/`; do not create bundle files directly in `Knowledge/` itself
+   (for example, never use `Knowledge/index.md` as the bundle index).
 2. **Gather scope.** Identify the domain and any source material (table schemas,
    docs, definitions). Ask the user for sources if the knowledge isn't already available.
 3. **Plan the concepts.** List the concepts and how to group them into
