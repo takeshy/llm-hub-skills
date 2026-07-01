@@ -3,6 +3,9 @@
   "name": "OKF Authoring",
   "version": "0.1.2",
   "description": "Author Open Knowledge Format (OKF) knowledge bundles in the vault so they can be used as LLM Hub ecosystem knowledge sources.",
+  "hostPatches": {
+    "gemihub": ["patches/gemihub.patch"]
+  },
   "compatibility": {
     "plugins": [
       { "id": "gemini-helper", "minVersion": "1.17.0" },

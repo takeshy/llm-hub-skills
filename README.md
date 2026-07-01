@@ -17,6 +17,9 @@ Example:
   "name": "OKF Authoring",
   "version": "0.1.1",
   "description": "Author Open Knowledge Format (OKF) knowledge bundles in the vault so they can be used as LLM Hub ecosystem knowledge sources.",
+  "hostPatches": {
+    "gemihub": ["patches/gemihub.patch"]
+  },
   "compatibility": {
     "plugins": [
       { "id": "gemini-helper", "minVersion": "1.16.0" },
@@ -36,6 +39,7 @@ Fields:
 | `name` | Yes | string | Human-readable skill name shown in plugin UIs and catalogs. |
 | `version` | Yes | string | Skill version. Use semantic versioning (`MAJOR.MINOR.PATCH`). |
 | `description` | Yes | string | One-sentence summary of what the skill helps an agent do. |
+| `hostPatches` | No | object | Host-specific unified diff files to apply during import. Keys are plugin IDs; paths are relative to the skill folder. |
 | `compatibility` | Yes | object | Compatibility declaration for host plugins. |
 | `compatibility.plugins` | Yes | array | List of plugins that can consume this skill. At least one plugin entry is required. |
 | `compatibility.plugins[].id` | Yes | string | Stable plugin identifier, such as `gemini-helper`. |
@@ -47,6 +51,7 @@ Rules:
 - `id` is immutable after publication. Create a new skill directory when a rename would break consumers.
 - `version` MUST change whenever the skill content or manifest changes.
 - A skill can support multiple plugins by adding entries to `compatibility.plugins`.
+- If a skill needs host-specific instructions, list patch files in `hostPatches` instead of forking the whole skill.
 - Additional fields are allowed, but consumers MUST ignore unknown fields.
 
 ## Skills

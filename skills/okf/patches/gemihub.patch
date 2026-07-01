@@ -1,0 +1,13 @@
+--- a/SKILL.md
++++ b/SKILL.md
+@@ -38,7 +38,7 @@ Use this skill when the user wants to:
+    progressive disclosure.
+ 6. **Optionally write `log.md`** to record what was created/updated.
+-7. **Tell the user to register the bundle**: Settings → *Knowledge sources* →
+-   enable *OKF*, set the OKF directory to the bundle root, then select the
+-   discovered OKF bundle in chat from the OKF selector.
++7. **Tell the user to register the bundle in GemiHub**: sync the Drive files,
++   open Settings → *RAG*, set the OKF folder path to the parent folder that
++   contains the bundle, select the discovered bundle, and save the selection.
+ 
+ ## Bundle structure
