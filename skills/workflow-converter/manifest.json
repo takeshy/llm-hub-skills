@@ -1,0 +1,11 @@
+{
+  "id": "workflow-converter",
+  "name": "Workflow Converter",
+  "version": "0.1.0",
+  "description": "Convert Markdown hub-workflow blocks into canonical standalone .workflow.yaml files.",
+  "compatibility": {
+    "plugins": [
+      { "id": "llm-hub-workspace", "minVersion": "0.1.0" }
+    ]
+  }
+}

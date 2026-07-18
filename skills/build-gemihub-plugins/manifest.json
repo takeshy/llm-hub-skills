@@ -1,0 +1,12 @@
+{
+  "id": "build-gemihub-plugins",
+  "name": "Build GemiHub Plugins",
+  "version": "0.1.1",
+  "description": "Create, port, build, validate, and release plugins for GemiHub Web and GemiHub Desktop.",
+  "compatibility": {
+    "plugins": [
+      { "id": "gemihub", "minVersion": "0.1.0" },
+      { "id": "gemihub-desktop", "minVersion": "0.1.0" }
+    ]
+  }
+}

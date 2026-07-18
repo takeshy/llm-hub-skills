@@ -1,0 +1,52 @@
+name: Convert Markdown Workflow
+options:
+  showProgress: true
+nodes:
+  - id: source-path
+    type: variable
+    name: source_path
+    next: output-path
+  - id: output-path
+    type: variable
+    name: output_path
+    next: read-source
+  - id: read-source
+    type: file-explorer
+    path: "{{source_path}}"
+    saveTo: source_file
+    next: extract-yaml
+  - id: extract-yaml
+    type: script
+    code: |
+      const sourcePath = String(variables.source_path || "");
+      const outputPath = String(variables.output_path || "");
+      if (!sourcePath.toLowerCase().endsWith(".md")) {
+        throw new Error("source_path must point to a Markdown file");
+      }
+      if (!outputPath.toLowerCase().endsWith(".workflow.yaml")) {
+        throw new Error("output_path must end in .workflow.yaml");
+      }
+      const file = JSON.parse(String(variables.source_file || "{}"));
+      const source = String(file.data || "");
+      const matches = [...source.matchAll(/^(`{3,})(?:hub-workflow|workflow)[^\n]*\r?\n([\s\S]*?)\r?\n\1[ \t]*$/gm)];
+      if (matches.length !== 1) {
+        throw new Error(`Expected exactly one workflow block, found ${matches.length}`);
+      }
+      const yaml = matches[0][2].trim();
+      if (!/^\s*(?:name|nodes|workflow):/m.test(yaml) || !/^\s*nodes:/m.test(yaml) && !/^\s*workflow:/m.test(yaml)) {
+        throw new Error("The workflow block does not contain a nodes definition");
+      }
+      return `${yaml}\n`;
+    saveTo: workflow_yaml
+    next: save-workflow
+  - id: save-workflow
+    type: file-save
+    source: workflow_yaml
+    path: "{{output_path}}"
+    confirm: true
+    savePathTo: saved_path
+    next: finish
+  - id: finish
+    type: set
+    name: _clipboard
+    value: "{{saved_path}}"

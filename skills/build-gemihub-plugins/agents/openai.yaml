@@ -1,0 +1,4 @@
+interface:
+  display_name: "Build GemiHub Plugins"
+  short_description: "Build plugins for GemiHub Web and Desktop"
+  default_prompt: "Use $build-gemihub-plugins to create a cross-host GemiHub plugin."
