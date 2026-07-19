@@ -10,21 +10,22 @@ Keep business logic and React components shared. Put identifier and capability t
 declare const __GEMIHUB_DESKTOP__: boolean;
 
 interface DesktopFiles {
+  inventory(): Promise<Array<{ path: string }>>;
   read(path: string): Promise<string>;
   create(path: string, content: string | ArrayBuffer): Promise<void>;
   update(path: string, content: string | ArrayBuffer): Promise<void>;
 }
 
 interface DesktopAPI {
-  projectFiles?: DesktopFiles;
+  files?: DesktopFiles;
   [key: string]: unknown;
 }
 
 export function adaptPluginAPI<T>(input: T): T {
   if (!__GEMIHUB_DESKTOP__) return input;
   const api = input as T & DesktopAPI;
-  const files = api.projectFiles;
-  if (!files) throw new Error("This plugin requires GemiHub Desktop 0.8.1 or newer.");
+  const files = api.files;
+  if (!files) throw new Error("This plugin requires GemiHub Desktop 0.10.0 or newer.");
   return Object.assign(api, {
     drive: {
       readFile(path: string) { return files.read(path); },
@@ -43,9 +44,14 @@ export const mainLocation: "sidebar" | "main" =
   __GEMIHUB_DESKTOP__ ? "sidebar" : "main";
 ```
 
-Call `adaptPluginAPI(hostAPI)` once in `onload`. Do not implement `searchFiles`, `listFiles`, or ID-to-path translation unless the plugin needs them and their semantics are defined. For binary Desktop reads, decode the data URL returned by project file reading before passing bytes to a decoder.
+Call `adaptPluginAPI(hostAPI)` once in `onload`. Do not implement `searchFiles`, `listFiles`, or ID-to-path translation unless the plugin needs them and their semantics are defined. For binary Desktop reads, decode the data URL returned by Workspace file reading before passing bytes to a decoder.
 
-Do not port a Web main view by expecting Desktop to pass Web-style `fileId`/`fileName` or even the optional typed `filePath` prop. The current Desktop sidebar renderer passes only `api` and `language`. Subscribe to `onActiveFileChanged`, or add a project-relative picker using `projectFiles.inventory()`, and keep that selection boundary explicit.
+Do not port a Web main view by expecting Desktop to pass Web-style `fileId`/`fileName` or even the optional typed `filePath` prop. The current Desktop sidebar renderer passes only `api` and `language`. Subscribe to `onActiveFileChanged`, or add a Workspace-relative picker using `api.files.inventory()`, and keep that selection boundary explicit.
+
+When a shared plugin exposes model selection on Desktop, populate it from
+`api.llm.listModels()` and pass the selected opaque ID as `modelId` to
+`api.llm.chat()`. Do not share a Web model-name text field with Desktop; the
+Desktop ID identifies a configured provider profile, not only a raw model name.
 
 ## Generate a release-bundle patch
 

@@ -21,7 +21,7 @@ If the target is ambiguous, inspect the repository and ask only when the choice 
 
 1. Inspect the target repository, dirty worktree, package version, tags, build scripts, manifest, API calls, direct host URLs, registered views, and cleanup behavior. Preserve unrelated changes.
 2. Verify every API against the current primary sources listed in the selected references. Treat implementation and type definitions as authoritative when prose documentation differs.
-3. Inventory required capabilities before coding: files, project files, storage, network, LLM, active-file events, assets, views, settings, commands, and widgets.
+3. Inventory required capabilities before coding: Workspace files, storage, network, configured LLM models, active-file events, assets, views, settings, commands, and widgets.
 4. Declare only the permissions actually used. Guard optional APIs before access.
 5. Keep the CommonJS entrypoint and React contract shared. Add a host adapter only where identifiers or capability shapes differ.
 6. For cross-host work, generate the Desktop unified diff from two builds of the same source. Apply the diff to the release `main.js`; never describe it as a patch to Desktop application source.
@@ -35,6 +35,7 @@ If the target is ambiguous, inspect the repository and ask only when the choice 
 - Export a class through `module.exports` or `module.exports.default`, implement `onload(api)`, and release listeners, timers, subscriptions, workers, and object URLs from `onunload()`.
 - Treat view, settings, command, and widget registration as one design vocabulary, but consult the support matrix before calling a method. Use the same `registerWidget` definition on Web and Desktop 0.9.0 or newer; do not generate a host patch for widget registration.
 - Use Drive IDs on Web and project-relative paths on Desktop. Do not silently pass one identifier form to the other.
+- Use `api.files` for Desktop Workspace access. Populate Desktop model selectors from `api.llm.listModels()` and pass the exact selected ID as `modelId`.
 - Do not claim Calendar, Gmail, Sheets, slash-command, or main-view support merely because a permission string or type alias exists elsewhere.
 - Keep generated patches small and reviewable. Avoid minifying the two inputs when line-oriented diff stability matters.
 
