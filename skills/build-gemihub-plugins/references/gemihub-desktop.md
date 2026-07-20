@@ -19,7 +19,7 @@ Prefer current native names for Desktop-only plugins:
 
 | Permission | API |
 |---|---|
-| `files` | `api.files` |
+| `files` | `api.workspaceFiles` and `api.files` |
 | `storage` | `api.storage` |
 | `network` | `api.network` |
 | `llm` | `api.llm` |
@@ -28,29 +28,28 @@ For shared manifests, Desktop maps `drive` to file capability and `gemini` to LL
 
 ## Workspace files
 
-Prefer `api.files`; it addresses the selected Desktop Workspace root and exposes
-the Workspace identity and complete inventory:
+Use `api.workspaceFiles` for the active Desktop Workspace:
 
 ```ts
-api.files?.current()
-api.files?.inventory()
-api.files?.read(path)
-api.files?.search(query, limit?)
-api.files?.tree()
-api.files?.create(path, content)
-api.files?.update(path, content)
-api.files?.createDirectory(path)
-api.files?.rename(oldPath, newPath)
-api.files?.delete(path)
+api.workspaceFiles?.current()
+api.workspaceFiles?.inventory()
+api.workspaceFiles?.read(path)
+api.workspaceFiles?.create(path, content)
+api.workspaceFiles?.update(path, content)
+api.workspaceFiles?.createDirectory(path)
+api.workspaceFiles?.rename(oldPath, newPath)
+api.workspaceFiles?.delete(path)
 ```
 
-Use Workspace-relative forward-slash paths. Binary reads return data URLs for recognized binary extensions; binary writes accept `ArrayBuffer`. Do not pass a Web Drive ID into these methods.
+Use Workspace-relative forward-slash paths. Do not add `workspace://`, `files://`, an absolute Workspace directory, or a Web Drive ID. Scope belongs to the selected API surface, not the path string. Binary reads return data URLs for recognized binary extensions; binary writes accept `ArrayBuffer`.
+
+Use `api.files` only for the separately selected external Files root. It has the same relative-path rule and additionally exposes `search()` and `tree()`. Never pass a path returned by one root API directly to the other unless the plugin deliberately copies content between roots.
 
 For a Workspace-wide plugin, select the capability once and keep all reads and
 writes on the same surface:
 
 ```ts
-const files = api.files;
+const files = api.workspaceFiles;
 if (!files) throw new Error("This plugin requires Workspace files.");
 const workspace = await files.current();
 const inventory = await files.inventory();
@@ -63,10 +62,11 @@ must declare `minAppVersion: "0.10.0"` or newer.
 const unsubscribe = api.onActiveFileChanged(({ path, name }) => {
   // Both values can be null.
 });
-api.selectFile(path);
 ```
 
-The component type permits `{ api, language?, filePath? }`, but the current `PluginHost` renders sidebar components with only `api` and `language`. Do not depend on a `filePath` prop. Subscribe with `onActiveFileChanged` or offer a picker backed by `api.files.inventory()` when the view needs a file.
+The active-file callback currently exposes a path without its root. Use it for display/context, but do not feed that path into a root API unless the plugin already knows the source root. The current string-only `api.selectFile(path)` has the same ambiguity; do not depend on it for cross-root navigation.
+
+The component type permits `{ api, language?, filePath? }`, but the current `PluginHost` renders sidebar components with only `api` and `language`. Do not depend on a `filePath` prop. Offer a picker backed by `api.workspaceFiles.inventory()` when the view needs a Workspace file. If a picker combines Workspace and Files results, retain the chosen API/root alongside the relative path in plugin state.
 
 ## Network, LLM, storage, and assets
 

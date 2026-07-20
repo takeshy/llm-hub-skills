@@ -9,7 +9,7 @@ Keep business logic and React components shared. Put identifier and capability t
 ```ts
 declare const __GEMIHUB_DESKTOP__: boolean;
 
-interface DesktopFiles {
+interface DesktopWorkspaceFiles {
   inventory(): Promise<Array<{ path: string }>>;
   read(path: string): Promise<string>;
   create(path: string, content: string | ArrayBuffer): Promise<void>;
@@ -17,14 +17,14 @@ interface DesktopFiles {
 }
 
 interface DesktopAPI {
-  files?: DesktopFiles;
+  workspaceFiles?: DesktopWorkspaceFiles;
   [key: string]: unknown;
 }
 
 export function adaptPluginAPI<T>(input: T): T {
   if (!__GEMIHUB_DESKTOP__) return input;
   const api = input as T & DesktopAPI;
-  const files = api.files;
+  const files = api.workspaceFiles;
   if (!files) throw new Error("This plugin requires GemiHub Desktop 0.10.0 or newer.");
   return Object.assign(api, {
     drive: {
@@ -46,7 +46,7 @@ export const mainLocation: "sidebar" | "main" =
 
 Call `adaptPluginAPI(hostAPI)` once in `onload`. Do not implement `searchFiles`, `listFiles`, or ID-to-path translation unless the plugin needs them and their semantics are defined. For binary Desktop reads, decode the data URL returned by Workspace file reading before passing bytes to a decoder.
 
-Do not port a Web main view by expecting Desktop to pass Web-style `fileId`/`fileName` or even the optional typed `filePath` prop. The current Desktop sidebar renderer passes only `api` and `language`. Subscribe to `onActiveFileChanged`, or add a Workspace-relative picker using `api.files.inventory()`, and keep that selection boundary explicit.
+Do not port a Web main view by expecting Desktop to pass Web-style `fileId`/`fileName` or even the optional typed `filePath` prop. The current Desktop sidebar renderer passes only `api` and `language`. Add a Workspace-relative picker using `api.workspaceFiles.inventory()` and keep that selection boundary explicit. The active-file callback and `selectFile(path)` expose no root discriminator, so do not use either to bridge Workspace and Files. Do not serialize scope as `workspace://` or `files://`; choose `workspaceFiles` versus `files` at the adapter boundary and retain that choice alongside the relative path.
 
 When a shared plugin exposes model selection on Desktop, populate it from
 `api.llm.listModels()` and pass the selected opaque ID as `modelId` to

@@ -35,7 +35,7 @@ If the target is ambiguous, inspect the repository and ask only when the choice 
 - Export a class through `module.exports` or `module.exports.default`, implement `onload(api)`, and release listeners, timers, subscriptions, workers, and object URLs from `onunload()`.
 - Treat view, settings, command, and widget registration as one design vocabulary, but consult the support matrix before calling a method. Use the same `registerWidget` definition on Web and Desktop 0.9.0 or newer; do not generate a host patch for widget registration.
 - Use Drive IDs on Web and project-relative paths on Desktop. Do not silently pass one identifier form to the other.
-- Use `api.files` for Desktop Workspace access. Populate Desktop model selectors from `api.llm.listModels()` and pass the exact selected ID as `modelId`.
+- Use `api.workspaceFiles` for Desktop Workspace access and `api.files` for the separately selected Files root. Pass only root-relative paths to either API; never encode storage scope into a path string. Populate Desktop model selectors from `api.llm.listModels()` and pass the exact selected ID as `modelId`.
 - Do not claim Calendar, Gmail, Sheets, slash-command, or main-view support merely because a permission string or type alias exists elsewhere.
 - Keep generated patches small and reviewable. Avoid minifying the two inputs when line-oriented diff stability matters.
 

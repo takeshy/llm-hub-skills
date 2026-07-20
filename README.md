@@ -56,5 +56,6 @@ Rules:
 
 ## Skills
 
+- **build-gemihub-plugins** — Create, port, validate, and release plugins for GemiHub Web and GemiHub Desktop.
 - **okf** — Author and maintain Open Knowledge Format (OKF) knowledge bundles in the vault, for use as LLM Hub ecosystem knowledge sources.
 - **workflow-converter** — Convert Markdown `hub-workflow` blocks into canonical standalone `.workflow.yaml` files for LLM Hub Workspace.
